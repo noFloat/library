@@ -1,0 +1,70 @@
+    <include file="Layout:header" />
+                          <div class="row-fluid">
+                <div class="span12">
+                    <div class="tabbable" id="tabs-495601">
+                        <ul class="nav nav-tabs">
+                            <li class="active">
+                                <a href="#panel-873605" data-toggle="tab">查找书籍</a>
+                            </li>
+                        </ul>
+                        <div class="tab-content">
+                            <div class="tab-pane active" id="panel-873605">
+                                <table class="table table-striped">
+                                   <div style = "margin-top:6px;"> 
+                                        <input type = "text" id = "book" name = "book" placeholder = "请输入书名">
+                                        <button type = "submit " id = "submit_book" class = "btn btn-default" style = "height:24px;margin-left:10px;line-height:5px;" >查找目标书籍</button>
+                                    </div>
+                                   <thead>
+                                      <tr>
+                                         <th>书号</th> 
+                                         <th>书名</th>
+                                         <th>入库时间</th>
+                                         <th>剩余数量</th>
+                                         <th>出版社</th>
+                                         <th>作者</th>
+                                      </tr>
+                                   </thead>
+                                   <tbody  id = "content_stu">
+                                    </tbody>
+                                   </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    <include file="Layout:footer" />
+     <script>
+        var queryUrl = "{:U('Index/searchBook')}"; 
+        $('#submit_book').on('click', function () {
+            $.ajax({
+                url: queryUrl,
+                type: 'POST',
+                data: {
+                    book: $('#book').val(),
+                },
+                dataType: '',
+                success: function (res) {
+                    var data = $.parseJSON(res);
+                    var string;
+                    if (data.state == 200) {
+                        $('#content_stu').children().remove();
+                        for (var i = 0; i < data.data.length; i++) {
+                            var ele = data.data[i];
+                            if(ele == undefined){
+                                continue;
+                            }
+                            string += "<tr><td>"+ele.id+"</td><td>"+ele.bookname+"</td><td>"+ele.purchingtime+"</td><td>"+ele.num+"</td><td>"+ele.pubhouse+"</td><td>"+ele.auth+"</td>"+"</tr>";
+                          }
+                        $('#content_stu').append(string);
+                    }else{
+                        alert(data.info);
+                    }
+                },
+                error: function () {
+                    alert('网络错误');
+                }
+            })
+        });
+    </script>

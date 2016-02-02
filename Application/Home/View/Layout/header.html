@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>莫名其妙的后台管理233</title>
+        <link href="__PUBLIC__/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+        <script src="__PUBLIC__/bootstrap/css/bootstrap-theme.min.css"></script>
+        <script src="__PUBLIC__/js/jquery.min.js"></script>
+        <script src="__PUBLIC__/js/special.js"></script>
+        <script src="__PUBLIC__/bootstrap/js/bootstrap.min.js"></script>
+        <link href="__PUBLIC__/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+        <link href="__PUBLIC__/css/header.css" rel="stylesheet">
+	</head>
+<body style = "overflow:hidden;">
+<div class = "container-fluid sparkley">
+    <nav class="navbar navbar-default" role="navigation">
+       <div class="navbar-header" style = "width:150px;">
+          <a class="navbar-brand" href="{:U('Index/index')}">管理系统</a>
+       </div>
+       <div>
+          <ul class="nav navbar-nav">
+            <if condition="$Think.session.username eq NULL">
+              <li class="active"><a href="#">游客</a></li>
+            <else /> 
+              <li style = "width:60px float:left;" ><a href="#" style = "display:block;text-align:center;">{$Think.session.username}</a></li>
+            </if>
+             <li class="dropdown" style = "">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                   个人中心
+                   <b class="caret"></b>
+                </a>
+                <ul class="dropdown-menu">
+                   <li><a href="{:U('Index/destory')}">注销</a></li>
+                   <li class="divider"></li>
+                <if condition="$Think.session.type neq NULL">
+                   <li><a href="{:U('Personal/index')}">修改个人资料</a></li>
+                   <li class="divider"></li>
+                </if>
+                    <li><a href="{:U('Personal/showPWD')}">修改密码</a></li>
+                </ul>
+             </li>
+          </ul>
+       </div>
+    </nav>
+</div>
+<div class = "container-fluid text-info">
+	<div class = "row">
+		<div class = "col-xs-3 col-md-2">
+			<div class="panel-group" id="accordion" >
+				<div class="panel panel-default">
+					<div class="panel-heading">
+					  <h4 class="panel-title">
+					    <a data-toggle="collapse" data-parent="#accordion" 
+					      href="#collapseOne">
+					      图书馆资源
+					    </a>
+					  </h4>
+					</div>
+					<div id="collapseOne" class="panel-collapse collapse in">
+					  <div class="panel-body">
+					    <a href="{:U('Index/bookShow')}">查找书目</a>
+					  </div>
+					  <div class="panel-body">
+					    <a href="{:U('Index/amazon')}">亚马逊查询</a>
+					  </div>
+					</div>
+					</div>
+					<div class="panel panel-default">
+					<div class="panel-heading">
+					  <h4 class="panel-title">
+					    <a data-toggle="collapse" data-parent="#accordion" 
+					      href="#collapseTwo">
+					      图书管理员
+					    </a>
+					  </h4>
+					</div>
+					<div id="collapseTwo" class="panel-collapse collapse">
+					  <div class="panel-body">
+					    书目管理
+					  </div>
+					</div>
+					</div>
+					<div class="panel panel-default">
+					<div class="panel-heading">
+					  <h4 class="panel-title">
+					    <a data-toggle="collapse" data-parent="#accordion" 
+					      href="#collapseThree">
+					      图书馆
+					    </a>
+					  </h4>
+					</div>
+					<div id="collapseThree" class="panel-collapse collapse">
+					  <div class="panel-body">
+					    
+					  </div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div id = "container"></div>
+	    <div class = "col-xs-8 col-md-7">
+	        <div class="container-fluid" style="">
+

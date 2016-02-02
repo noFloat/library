@@ -1,0 +1,57 @@
+    <include file="Layout:header" />
+    	         <div class="row-fluid">
+                <div class="span12">
+                    <div class="tabbable" id="tabs-495601">
+                        <ul class="nav nav-tabs">
+                            <li class="active">
+                                <a href="#panel-873605" data-toggle="tab">个人资料</a>
+                            </li>
+                        </ul>
+                        <div class="tab-content">
+                            <div class="tab-pane active" id="panel-873605">
+                                <table class="table table-striped">
+                                   <caption>更改非空内容</caption>
+                                   <thead>
+                                      <tr>
+                                         <th>邮箱</th>
+                                         <th>电话</th>
+                                      </tr>
+                                   </thead>
+                                   <tbody>
+                                        <tr>
+                                          <td><input type="e-mail" id = "mail"></td>
+                                          <td><input type="text" id = "phone"></td>
+                                          <td><button id = "person_sub" class = "btn btn-default">点击提交</button></td>
+                                        </tr>
+                                   </tbody>
+                                </table>
+                            </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    <include file="Layout:footer" />
+    <script>
+        var queryUrl = "{:U('Personal/change')}"; 
+        $('#person_sub').on('click', function () {
+            $.ajax({
+                url: queryUrl,
+                type: 'POST',
+                data: {
+                    mail: $('#mail').val(),
+                    phone: $('#phone').val(),
+                },
+                dataType: '',
+                success: function (res) {
+                    var data = $.parseJSON(res);
+                    var string;
+                    alert(data.info);
+                },
+                error: function () {
+                    alert('网络错误');
+                }
+            })
+        });
+    </script>

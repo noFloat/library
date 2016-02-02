@@ -1,0 +1,62 @@
+    <include file="Layout:header" />
+    	         <div class="row-fluid">
+                <div class="span12">
+                    <div class="tabbable" id="tabs-495601">
+                        <ul class="nav nav-tabs">
+                            <li class="active">
+                                <a href="#panel-873605" data-toggle="tab">个人资料</a>
+                            </li>
+                        </ul>
+                        <div class="tab-content">
+                            <div class="tab-pane active" id="panel-873605">
+                                <table class="table table-striped">
+                                   <caption>修改密码</caption>
+                                   <thead>
+                                      <tr>
+                                         <th>原密码</th>
+                                         <th>新密码</th>
+                                         <th>确认密码</th>
+                                      </tr>
+                                   </thead>
+                                   <tbody>
+                                        <tr>
+                                          <td><input type="password" id = "origin"></td>
+                                          <td><input type="password" id = "now"></td>
+                                          <td><input type="password" id = "changenow"></td>
+                                          <td><button id = "person_sub" class = "btn btn-default">点击提交</button></td>
+                                        </tr>
+                                   </tbody>
+                                </table>
+                            </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    <include file="Layout:footer" />
+    <script>
+        var queryUrl = "{:U('Personal/changePWD')}"; 
+        $('#person_sub').on('click', function () {
+            $.ajax({
+                url: queryUrl,
+                type: 'POST',
+                data: {
+                    origin: $('#origin').val(),
+                    now: $('#now').val(),
+                    changenow: $('#changenow').val(),
+                },
+                dataType: '',
+                success: function (res) {
+                    var data = $.parseJSON(res);
+                    alert(data.info);
+                    if(data.state == 200){
+                      window.location.replace("{:U('Index/index')}");
+                    }
+                },
+                error: function () {
+                    alert('网络错误');
+                }
+            })
+        });
+    </script>

@@ -1,0 +1,160 @@
+    <include file="Layout:header" />
+    	         <div class="row-fluid">
+                <div class="span12">
+                    <div class="tabbable" id="tabs-495601">
+                        <ul class="nav nav-tabs">
+                            <li class="active">
+                                <a href="#panel-873605" data-toggle="tab">修改权限</a>
+                            </li>
+                            <li>
+                                <a href="#panel-411320" data-toggle="tab">审核</a>
+                            </li>
+                            <li>
+                                <a href="#panel-873607" data-toggle="tab">日志记录</a>
+                            </li>
+                        </ul>
+                        <div class="tab-content">
+                            <div class="tab-pane active" id="panel-873605">
+                                <table class="table table-striped">
+                                   <caption></caption>
+                                   <thead>
+                                      <tr>
+                                         <th>姓名</th>
+                                         <th>邮箱</th>
+                                         <th>创建时间</th>
+                                         <th>权限等级</th>
+                                         <th></th>
+                                      </tr>
+                                   </thead>
+                                   <tbody>
+                                      <volist name="all_user" id="all_user">
+                                        <tr>
+                                          <td>{$all_user.username}</td>
+                                          <td>{$all_user.email}</td>
+                                          <td>{$all_user.createtime}</td>
+                                          <td>{$all_user.name}</td>
+                                          <td class = "role">
+                                            <select class="selectpicker" id = "">
+                                              <option value = "teacher">teacher</option>
+                                              <option value = "office">office</option>
+                                            </select>
+                                          </td>
+                                          <td> <button type = "submit " id = "change_access" date-goal = "goal" date-type = "{$all_user.id}" class = "btn btn-default" style = "height:24px;margin-left:10px;line-height:5px;" >调整</button></td>
+                                        </tr>
+                                      </volist>
+                                   </tbody>
+                                </table>
+                            </div>
+                            <div class="tab-pane" id="panel-411320">
+                                <table class="table table-striped">
+                                   <caption></caption>
+                                   <thead>
+                                      <tr>
+                                         <th>姓名</th>
+                                         <th>邮箱</th>
+                                         <th>注册时间</th>
+                                         <th>备注</th>
+                                         <th>审核</th>
+                                      </tr>
+                                   </thead>
+                                   <tbody class = "">
+                                      <volist name="wait_user" id="wait_user">
+                                          <tr>
+                                             <td>{$wait_user.username}</td>
+                                             <td>{$wait_user.email}</td>
+                                             <td>{$wait_user.createtime}</td>
+                                             <td>{$wait_user.remark}</td>
+                                             <td><button type = "submit "  check-data = "{$wait_user.id}" check-type = "check_register"  class = "btn btn-default" style = "height:24px;margin-left:10px;line-height:5px;" >审核</button></td>
+                                          </tr>
+                                      </volist>
+                                   </tbody>
+                                </table>
+                              </div>
+                              <div class="tab-pane" id="panel-873607">
+                                  <table class="table table-striped">
+                                     <caption></caption>
+                                     <thead>
+                                        <tr>
+                                           <th>用户账号</th>
+                                           <th>修改时间</th>
+                                           <th>修改内容</th>
+                                           <th>修改ip</th>
+                                        </tr>
+                                     </thead>
+                                     <tbody>
+                                        <volist name="log" id="log">
+                                          <tr>
+                                             <td>{$log.username}</td>    
+                                             <td>{$log.datetime}</td>    
+                                             <td>{$log.content}</td>    
+                                             <td>{$log.clientip}</td>    
+                                          </tr>
+                                        </volist>
+                                        <td>{$log_cut}</td><td></td>
+                                     </tbody>
+                                  </table>
+                              </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    <include file="Layout:footer" />
+    <script>
+        var queryUrl = "{:U('Root/changeRole')}"; 
+        $('button[date-goal]').on('click', function () {
+            var role = $(this).parent().siblings(".role").find(".selectpicker").val();
+            var user_id = $(this).attr('date-type');
+            $.ajax({
+                url: queryUrl,
+                type: 'POST',
+                data: {
+                    role: role,
+                    user_id: user_id
+                },
+                dataType: '',
+                success: function (res) {
+                    var data = $.parseJSON(res);
+                    var string;
+                    if (data.state == 200) {
+                      alert(data.info);
+                      window.location.replace("{:U('Root/index')}");
+                    }else{
+                        alert(data.info);
+                    }
+                },
+                error: function () {
+                    alert('网络错误');
+                }
+            })
+        });
+    </script>
+    <script>
+        var checkUrl = "{:U('Root/checkRole')}"; 
+        $('button[check-type]').on('click', function () {
+            var check_id = $(this).attr('check-data');
+            var b = $(this).parent().parent();
+            $.ajax({
+                url: checkUrl,
+                type: 'POST',
+                data: {
+                    user_id: check_id
+                },
+                dataType: '',
+                success: function (res) {
+                    var data = $.parseJSON(res);
+                    var string;
+                    if (data.state == 200) {
+                      b.remove();
+                      alert(data.info);
+                    }else{
+                        alert(data.info);
+                    }
+                },
+                error: function () {
+                    alert('网络错误');
+                }
+            })
+        });
+    </script>

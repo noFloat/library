@@ -1,0 +1,79 @@
+    <include file="Layout:header" />
+    	         <div class="row-fluid">
+                <div class="span12">
+                    <div class="tabbable" id="tabs-495601">
+                        <ul class="nav nav-tabs">
+                            <li class="active">
+                                <a href="#panel-873605" data-toggle="tab">导出学生文件</a>
+                            </li>
+                        </ul>
+                        <div class="tab-content">
+                            <div class="tab-pane active" id="panel-873605">
+                                <table class="table table-striped">
+                                   <caption>选择输入</caption>
+                                   <div style = "margin-top:6px;"> 
+                                         <input type = "text" id = "stunum" placeholder = "请输入学号">
+                                         <input type = "text" id = "classid" placeholder = "请输入班级号">
+                                         <input type = "text" id = "province" placeholder = "请输入省份">
+                                        <button type = "submit " id = "submit_stu" class = "btn btn-default" style = "height:24px;margin-left:10px;line-height:5px;" >查找学生</button>
+                                        <form action = "{:U('Excel/showExcel')}" method ="post" style = "display:inline-block">
+                                          <input type="hidden" name = "stunum" value = "" id = "goal_stu">
+                                          <input type = "submit" id = "export" class = "btn btn-default" style = "height:24px;margin-left:10px;line-height:5px;" value = "导出" >
+                                        </form>
+                                    </div>
+                                   <thead>
+                                      <tr>
+                                         <th>姓名</th>
+                                         <th>性别</th>
+                                         <th>学号</th>
+                                         <th>班级号</th>
+                                         <th>身份证号</th>
+                                         <th>省份</th>
+                                      </tr>
+                                   </thead>
+                                   <tbody  class = "content_stu">
+                                   </tbody>
+                                </table>
+                            </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    <include file="Layout:footer" />
+    <script>
+        var stunum;
+        var queryUrl = "{:U('Excel/searchStudent')}"; 
+        $('#submit_stu').on('click', function () {
+            $.ajax({
+                url: queryUrl,
+                type: 'POST',
+                data: {
+                    stunum: $('#stunum').val(),
+                    classid: $('#classid').val(),
+                    province: $('#province').val(),
+                },
+                dataType: '',
+                success: function (res) {
+                    var res = $.parseJSON(res);
+                    var string;
+                    if (res.state == 200) {
+                      for (var i = 0; i < res.data.length; i++) {
+                        var ele = res.data[i];
+                        string += "<tr><td>"+ele.stu_name+"</td>"+"<td>"+ele.sex+"</td>"+"<td>"+ele.stu_id+"</td>"+"<td>"+ele.class_id+"</td>"+"<td>"+ele.idcard+"</td>"+"<td>"+ele.province+"</td>"+"</tr>";
+                        stunum += ","+ele.stu_id;
+                        $("#goal_stu").val(stunum);
+                      }
+                      $('.content_stu').append(string);
+
+                    }else if (res.state == 404){
+                      alert(res.info);
+                    }
+                },
+                error: function () {
+                    alert('网络错误');
+                }
+            })
+        });
+    </script>

@@ -1,0 +1,250 @@
+    <include file="Layout:header" />
+    	                  <div class="row-fluid">
+                <div class="span12">
+                    <div class="tabbable" id="tabs-495601">
+                        <ul class="nav nav-tabs">
+                            <li class="active">
+                                <a href="#panel-873605" data-toggle="tab">批量添加学生</a>
+                            </li>
+                            <li>
+                                <a href="#panel-411320" data-toggle="tab">修改信息学生信息</a>
+                            </li>
+                            <li>
+                                <a href="#panel-873606" data-toggle="tab">上传附件</a>
+                            </li>
+                            <li>
+                                <a href="#panel-873607" data-toggle="tab">手动添加学生</a>
+                            </li>
+                        </ul>
+                        <div class="tab-content">
+                          <div class="tab-pane active" id="panel-873605">
+                                <table class="table table-striped">
+                                   <caption>添加学生</caption>
+                                   <thead>
+                                      <tr>
+                                      </tr>
+                                   </thead>
+                                   <tbody>
+                                        <tr>
+                                        <form enctype="multipart/form-data"  method = "post" action = "{:U('Excel/import')}" id = "uploadForm">
+                                        <td><input id="lefile" type="file" style="display:none" name = "excel">
+                                            <div class="input-append">
+                                              <input id="photoCover" class="input-large" name = "" type="text" style="height:30px;">
+                                              <a class="btn" id = 'same'>Browse</a>
+                                            </div>
+                                        </td>
+                                        <td><input type="submit"  class = "btn btn-default" id = "upload_Form"></td>
+                                        </form>
+                                        </tr>
+                                   </tbody>
+                                </table>
+                            </div>
+                            <div class="tab-pane" id="panel-411320">
+                                <table class="table table-striped">
+                                   <caption>选择输入</caption>
+                                   <div style = "margin-top:6px;"> 
+                                         <input type = "text" id = "stunum" placeholder = "请输入学号">
+                                        <button type = "submit " id = "submit_stu" class = "btn btn-default" style = "height:24px;margin-left:10px;line-height:5px;" >查找学生</button>
+                                        <form action = "{:U('Excel/showExcel')}" method ="post" style = "display:inline-block">
+                                          <input type="hidden" name = "stunum" value = "" id = "goal_stu">
+                                        </form>
+                                    </div>
+                                   <thead>
+                                      <tr>
+                                         <th>姓名</th>
+                                         <th>性别</th>
+                                         <th>学号</th>
+                                         <th>班级号</th>
+                                         <th>身份证号</th>
+                                         <th>省份</th>
+                                         <th>在校</th>
+                                         <th>提交</th>
+                                      </tr>
+                                   </thead>
+                                   <tbody  id = "content_stu">
+                                    <form action = "{:U('Excel/update')}" id = "content_stu" method = 'post'>
+                                      <tr>
+                                        <td><input type = 'hidden' id = 'stuname'  value='' name = "stu_name"></td>
+                                        <td><input  type = 'hidden' id = 'stusex' value='' name = "stu_sex"></td>
+                                        <td ><span id = "stu_id"></span></td>
+                                        <td><input  type = 'hidden' id = 'stuclass' value='' name = "stu_class"></td>
+                                        <td ><span id = "stu_idcard"></span></td>
+                                        <td><input type = 'hidden' id = 'province' name = "stu_province" value=''></td>
+                                        <td id = "stu_state">
+                                          <select class='selectpicker' id = ''  name = 'status'><option value = '1'>在校</option><option value = '0'>离校</option></select>
+                                        </td>
+                                        <td><input type = 'hidden' id = 'updown' value='提交'  class = "btn btn-default"></td>
+                                        <td><input type = 'hidden' id = 'up_id' name = "stu_id" value=''></td>
+                                      </tr>
+                                    </form>
+                                    </tbody>
+                                   </tbody>
+                                </table>
+                            </div>
+                            <div class="tab-pane" id="panel-873606">
+                                <table class="table table-striped">
+                                   <caption>上传附件</caption>
+                                   <thead>
+                                      <tr>
+                                      </tr>
+                                   </thead>
+                                   <tbody>
+                                        <tr>
+                                        <form method = "post" action = "{:U('Excel/addAnnex')}" enctype="multipart/form-data" id = "uploadForm">
+                                        <td><input id="lefile2" type="file" style="display:none" name = "fold" >
+                                            <div class="input-append">
+                                              <input id="photoCover2" class="input-large" name = "" type="text" style="height:30px;" placeholder = "限docx和zip文件">
+                                              <a class="btn" id = 'same2'>Browse</a>
+                                            </div>
+                                        </td>
+                                        <td><input type="text"  placeholder = "请输入标题" name = "title" id = "upload_Form"></td>
+                                        <td><input type="submit"  class = "btn btn-default" id = "upload_Form"></td>
+                                        </form>
+                                        </tr>
+                                   </tbody>
+                                </table>
+                            </div>
+                            <div class="tab-pane" id="panel-873607">
+                                <table class="table table-striped">
+                                   <caption>添加学生</caption>
+                                   <thead>
+                                      <tr>
+                                      </tr>
+                                   </thead>
+                                   <tbody>
+                                        <tr>
+                                          <td style = "display:block;width:400px;">
+                                            <div class="input-group">
+                                               <span class="input-group-addon">姓名</span>
+                                               <input type="text" class="form-control" id = "addone_name" placeholder="姓名">
+                                            </div>
+                                            </br>
+                                            <div class="input-group">
+                                               <span class="input-group-addon">性别</span>
+                                               <input type="text" class="form-control" placeholder="男或女" size = "1" id = "addone_sex" >
+                                            </div>
+                                            </br>
+                                            <div class="input-group">
+                                               <span class="input-group-addon">学号</span>
+                                               <input type="text" maxlength = "10" class="form-control" onkeyup="value=value.replace(/[^\d]/g,'')" placeholder="数字" id = "addone_stuid">
+                                            </div>
+                                            </br>
+                                            <div class="input-group">
+                                               <span class="input-group-addon">省份</span>
+                                               <input type="text" class="form-control" placeholder="省份(没有省字)" id= "addone_province">
+                                            </div>
+                                            </br>
+                                            <div class="input-group">
+                                               <span class="input-group-addon">班级号</span>
+                                               <input type="text" maxlength = "7" class="form-control" placeholder="数字"onkeyup="value=value.replace(/[^\d]/g,'')" id = "addone_classid">
+                                            </div>
+                                            </br>
+                                            <div class="input-group">
+                                               <span class="input-group-addon">身份证号</span>
+                                               <input type="text" maxlength = "18" class="form-control" placeholder="数字" onkeyup="value=value.replace(/[^\d]/g,'')" id = "addone_idcard">
+                                            </div>
+                                            </br>
+                                            <input type = 'submit' id = 'addone' class = "btn btn-default"value='提交' >
+                                          </td>
+                                      </tr>
+                                   </tbody>
+                                </table>
+                            </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    <include file="Layout:footer" />
+    <script>
+        $('#same2').click(function() {
+          $('input[id=lefile2]').click();
+        });
+        $('input[id=lefile2]').change(function() {
+          $('#photoCover2').val($(this).val());
+        });
+    </script>
+    <script>
+        $('#same').click(function() {
+          $('input[id=lefile]').click();
+        });
+        $('input[id=lefile]').change(function() {
+          $('#photoCover').val($(this).val());
+        });
+    </script>
+    <script>
+        $("#stu_state").hide();
+        var queryUrl = "{:U('Excel/searchStudent')}"; 
+        $('#submit_stu').on('click', function () {
+            $.ajax({
+                url: queryUrl,
+                type: 'POST',
+                data: {
+                    stunum: $('#stunum').val(),
+                    classid: $('#classid').val(),
+                    province: $('#province').val(),
+                },
+                dataType: '',
+                success: function (res) {
+                    var res = $.parseJSON(res);
+                    var string;
+                    if (res.state == 200) {
+
+                        var ele = res.data[0];
+                        $("#stuname").attr('type','text');
+                        $("#stusex").attr('type','text');
+                        $("#stuclass").attr('type','text');
+                        $("#province").attr('type','text');
+                        $("#updown").attr('type','submit');
+
+                        $("#stuname").val(ele.stu_name);
+                        $("#stusex").val(ele.sex);
+                        $("#stu_id").html(ele.stu_id);
+                        $("#up_id").val(ele.stu_id);
+                        $("#stuclass").val(ele.class_id);
+                        $("#stu_idcard").html(ele.idcard);
+                        $("#province").val(ele.province);
+                        // $("#stu_state").empty();
+                        // string = "<select class='selectpicker' id = ''  name = '#status#'><option value = '1'>在校</option><option value = '0'>离校</option></select>";
+                        $("#stu_state").show();
+
+                    }else if (res.state == 404){
+                      alert(res.info);
+                    }
+                },
+                error: function () {
+                    alert('网络错误');
+                }
+            })
+        });
+    </script>
+    <script>
+        var addoneUrl = "{:U('Excel/addOne')}"; 
+        $('#addone').on('click', function () {
+            $.ajax({
+                url: addoneUrl,
+                type: 'POST',
+                data: {
+                    addone_name: $('#addone_name').val(),
+                    addone_sex: $('#addone_sex').val(),
+                    addone_stuid: $('#addone_stuid').val(),
+                    addone_province: $('#addone_province').val(),
+                    addone_classid: $('#addone_classid').val(),
+                    addone_idcard: $('#addone_idcard').val(),
+                },
+                dataType: '',
+                success: function (res) {
+                    var res = $.parseJSON(res);
+                    if (res.state == 200) {
+                      alert(res.info);
+                    }else if (res.state == 404){
+                      alert(res.info);
+                    }
+                },
+                error: function () {
+                    alert('网络错误');
+                }
+            })
+        });
+    </script>

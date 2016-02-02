@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>忘记密码</title>
+    <meta charset="utf-8">
+    <link type="text/css" href="http://fonts.googleapis.com/css?family=Open+Sans:400italic,700italic,800italic,400,700,800">
+    <link type="text/css" rel="stylesheet" href="http://fonts.googleapis.com/css?family=Oswald:400,700,300">
+    <link type="text/css" rel="stylesheet" href="__PUBLIC__/vendors/jquery-ui-1.10.3.custom/css/ui-lightness/jquery-ui-1.10.3.custom.css">
+    <link type="text/css" rel="stylesheet" href="__PUBLIC__/vendors/font-awesome/css/font-awesome.min.css">
+    <link type="text/css" rel="stylesheet" href="__PUBLIC__/vendors/bootstrap/css/bootstrap.min.css">
+    <link type="text/css" rel="stylesheet" href="__PUBLIC__/vendors/animate.css/animate.css">
+    <link type="text/css" rel="stylesheet" href="__PUBLIC__/vendors/iCheck/skins/all.css">
+    <link type="text/css" rel="stylesheet" href="__PUBLIC__/css/themes/style1/pink-blue.css" class="default-style">
+    <link type="text/css" rel="stylesheet" href="__PUBLIC__/css/themes/style1/pink-blue.css" id="theme-change" class="style-change color-change">
+    <link type="text/css" rel="stylesheet" href="__PUBLIC__/css/style-responsive.css">
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/css/styles.css">
+</head>
+<body style = "background-color: #74c9b5; height :480px;overflow:hidden;">
+    <div class="page-form" style = "margin-top:200px;">
+            <div class="header-content">
+                <h1 style = "color:#777777;">后台管理系统2333</h1>
+            </div>
+                <div class="body-content">
+                    <div class="form-group">
+                        <div class="input-icon right"><i class="fa fa-user"></i>
+                            <input type="text" placeholder="学号"id="user_name" class="form-control">
+                        </div>
+                    </div>
+                    <div class="form-inline" style = "margin-bottom:16px;">
+                        <div class="input-icon right">
+                            <input type="text" placeholder="注册邮箱验证码" id="check_code" class="form-control" style="width:60%;">
+                            <span style = "display:block;float:right"><button id = "sendMail"class="btn btn-success">发送验证码</a></span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="input-icon right"><i class="fa fa-key"></i>
+                            <input type="password" placeholder="新密码" id="password" class="form-control">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="input-icon right"><i class="fa fa-key"></i>
+                            <input type="password" placeholder="确认密码" id="checkpassword" class="form-control">
+                        </div>
+                    </div>
+                    <div class="form-group pull-right">
+                        <button type="submit" class="btn btn-success" id = "register">修改 &nbsp;
+                            <i class="fa fa-chevron-circle-right"></i>
+                        </button>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+    </div>
+    <ul class="bg-bubbles" style = "z-index:-1;">
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+    </ul>
+</body>
+    <script src = "__PUBLIC__/js/jquery.min.js"></script>
+    <script>
+        var sendUrl = "{:U('Register/sendMail')}"; 
+        $('#sendMail').on('click', function () {
+            var user_id = $('#user_name').val();
+            if(user_id == null){
+                alert('请输入学号');
+            }else{
+                $.ajax({
+                    url: sendUrl,
+                    type: 'POST',
+                    data: {
+                        user_id: user_id,
+                    },
+                    dataType: '',
+                    success: function (res) {
+                        var data = $.parseJSON(res);
+                        alert(data.info);
+                        
+                    },
+                    error: function () {
+                        alert('网络错误');
+                    }
+                })
+                }
+            });
+        $('#login-button').click(function(event){
+            event.preventDefault();
+            $('.all').addClass('form-success');
+        }); 
+        $('#login-button').trigger("focus");
+        var queryUrl = "{:U('Register/changePassword')}"; 
+        $('#register').on('click', function () {
+            $.ajax({
+                url: queryUrl,
+                type: 'POST',
+                data: {
+                    user_id: $('#user_name').val(),
+                    password: $('#password').val(),
+                    check_password: $('#checkpassword').val(),
+                    check_code: $('#check_code').val(),
+                },
+                dataType: '',
+                success: function (res) {
+
+                    var data = $.parseJSON(res);
+                    alert(data.info);
+                },
+                error: function () {
+                    alert('网络错误');
+                }
+            })
+        });
+    </script>
+</html>

@@ -1,0 +1,61 @@
+<link href="__PUBLIC__/css/reset.css" rel="stylesheet">
+<link href="__PUBLIC__/css/style.css" rel="stylesheet">
+    <include file="Layout:header" />
+            <div class="row-fluid">
+                <div class="span12">
+                    <div class="tabbable" id="tabs-495601">
+                        <ul class="nav nav-tabs">
+                        </ul>
+                        <div class="tab-content">
+                            <div class="tab-pane active" id="panel-873605">
+                                <section class="cd-intro">
+                                  <h1 class="cd-headline letters scale">
+                                    <span>这里是</span>
+                                    <span class="cd-words-wrapper">
+                                      <b class="is-visible">丛</b>
+                                      <b>广</b>
+                                      <b>林</b>
+                                    </span>
+                                    <span>的图书馆</span>
+                                  </h1>
+                                </section>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    <include file="Layout:footer" />
+    <script src="__PUBLIC__/js/cartoon.js"></script>
+     <script>
+        var queryUrl = "{:U('Index/searchBook')}"; 
+        $('#submit_book').on('click', function () {
+            $.ajax({
+                url: queryUrl,
+                type: 'POST',
+                data: {
+                    book: $('#book').val(),
+                },
+                dataType: '',
+                success: function (res) {
+                    var data = $.parseJSON(res);
+                    var string;
+                    if (data.state == 200) {
+                        $('#content_stu').children().remove();
+                        for (var i = 0; i < data.data.length; i++) {
+                            var ele = data.data[i];
+                            if(ele == undefined){
+                                continue;
+                            }
+                            string += "<tr><td>"+ele.id+"</td><td>"+ele.bookname+"</td><td>"+ele.purchingtime+"</td><td>"+ele.num+"</td><td>"+ele.pubhouse+"</td><td>"+ele.auth+"</td>"+"</tr>";
+                          }
+                        $('#content_stu').append(string);
+                    }else{
+                        alert(data.info);
+                    }
+                },
+                error: function () {
+                    alert('网络错误');
+                }
+            })
+        });
+    </script>

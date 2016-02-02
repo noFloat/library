@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Sign In</title>
+    <meta charset="utf-8">
+    <link type="text/css" href="http://fonts.googleapis.com/css?family=Open+Sans:400italic,700italic,800italic,400,700,800">
+    <link type="text/css" rel="stylesheet" href="http://fonts.googleapis.com/css?family=Oswald:400,700,300">
+    <link type="text/css" rel="stylesheet" href="__PUBLIC__/vendors/jquery-ui-1.10.3.custom/css/ui-lightness/jquery-ui-1.10.3.custom.css">
+    <link type="text/css" rel="stylesheet" href="__PUBLIC__/vendors/font-awesome/css/font-awesome.min.css">
+    <link type="text/css" rel="stylesheet" href="__PUBLIC__/vendors/bootstrap/css/bootstrap.min.css">
+    <link type="text/css" rel="stylesheet" href="__PUBLIC__/vendors/animate.css/animate.css">
+    <link type="text/css" rel="stylesheet" href="__PUBLIC__/vendors/iCheck/skins/all.css">
+    <link type="text/css" rel="stylesheet" href="__PUBLIC__/css/themes/style1/pink-blue.css" class="default-style">
+    <link type="text/css" rel="stylesheet" href="__PUBLIC__/css/themes/style1/pink-blue.css" id="theme-change" class="style-change color-change">
+    <link type="text/css" rel="stylesheet" href="__PUBLIC__/css/style-responsive.css">
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/css/styles.css">
+</head>
+<body style = "background-color: #74c9b5; height :480px;overflow:hidden;">
+<div class = "all" style = "height:100%;width:100%;"> 
+    <div class="page-form" style = "margin-top:200px;">
+            <div class="header-content">
+                <h1 style = "color:#777777;">后台管理系统2333</h1>
+            </div>
+            <div class="body-content">
+                <div class="form-group">
+                    <div class="input-icon right"><i class="fa fa-user"></i>
+                        <input type="text" placeholder="用户名或学号" id="user_name" class="form-control">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="input-icon right"><i class="fa fa-key"></i>
+                        <input type="password" placeholder="密码或身份证后6位" id="password" class="form-control">
+                    </div>
+                </div>
+
+                <div class="form-group pull-right">
+                    <button type="submit" class="btn btn-success" id = "login">登录 &nbsp;
+                        <i class="fa fa-chevron-circle-right"></i>
+                    </button>
+                </div>
+                <div class="form-group pull-right" style = "padding-right:20px;">
+                    <a type="" class="btn btn-success"  href = "{:U('Register/index')}">注册 &nbsp;
+                        <i class="fa fa-chevron-circle-right"></i>
+                    </a>
+                </div>
+                <div style = "padding-top:16px;">
+                    <a href="{:U('Register/forget')}" style = "text-decoration:none;">忘记密码?</a>
+                </div>
+                <div class="clearfix"></div>
+
+            </div>
+    </div>
+    <ul class="bg-bubbles" style = "z-index:-1;">
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+    </ul>
+</div>
+</body>
+    <script src = "__PUBLIC__/js/jquery.min.js"></script>
+    <script>
+        $('#login-button').click(function(event){
+            event.preventDefault();
+            $('.all').addClass('form-success');
+        }); 
+        $('#login-button').trigger("focus");
+        var queryUrl = "{:U('Login/checkLogin')}"; 
+        $('#login').on('click', function () {
+            $.ajax({
+                url: queryUrl,
+                type: 'POST',
+                data: {
+                    user_name: $('#user_name').val(),
+                    password: $('#password').val(),
+                },
+                dataType: '',
+                success: function (res) {
+                    var data = $.parseJSON(res);
+                    if (data.state == 200) {
+                        window.location.replace("{:U('Index/index')}");
+                    }else{
+                        alert(data.info);
+                    }
+                },
+                error: function () {
+                    alert('网络错误');
+                }
+            })
+        });
+    </script>
+</html>
