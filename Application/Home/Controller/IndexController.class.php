@@ -56,7 +56,6 @@ class IndexController extends Controller {
     	$output = $this->curl_init("http://www.amazon.cn/s/ref=nb_sb_noss?__mk_zh_CN=%E4%BA%9A%E9%A9%AC%E9%80%8A%E7%BD%91%E7%AB%99&url=search-alias%3Daps&field-keywords=".I('post.book'));
 		//$pattern = "/<li id=\"result_([\s\S]*?)\/li>/";
         $pattern = "/<a class=\"a-link-normal s-access-detail-page  a-text-normal\" target=\"_blank\" title=\"(.*?)\" href=\"(.*?)\"><h2 class=\"a-size-base a-color-null s-inline s-access-title a-text-normal\">(.*?)<\/h2><\/a>/";
-        
         $result = $this->_patternGoal($pattern,$output);
         for($i = 0 ;$i<10;$i++){
             $goal[$i]['title'] = $result[1][$i];
@@ -64,7 +63,7 @@ class IndexController extends Controller {
         }
         if($goal != null){
             $this->info200['data'] = $goal;
-            echo json_encode($$this->info200);
+            echo json_encode($this->info200);
         }else{
             echo json_encode($this->info404);
         }
