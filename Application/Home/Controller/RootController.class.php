@@ -37,18 +37,20 @@ class RootController extends BaseController {
         $all_wait_user = $this->user->where("status=0")->select();
         $this->assign('wait_user',$all_wait_user);
         $this->assign('goal',$goal);// 赋值数据集
-        $count = $this->log->count();// 查询满足要求的总记录数$Page       
-        $log= new \Think\Page($count,15);// 实例化分页类 传入总记录数和每页显示的记录数
+        $count = $this->log->count();// 查询满足要求的总记录数$Page     
+        $log= new \Think\Page($count,10);// 实例化分页类 传入总记录数和每页显示的记录数
         $log->lastSuffix=false;
         $log->setConfig('prev','上一页');
         $log->setConfig('next','下一页');
         $log->setConfig('last','末页');
         $log->setConfig('first','首页');
         $log->setConfig('theme','%FIRST% %UP_PAGE% %LINK_PAGE% %DOWN_PAGE% %END% %HEADER%');
+        $all_log = $this->log
+                    ->limit($log->firstRow.','.$log->listRows)
+                    ->select();
+        $this->assign('log',$all_log);
         $log_show = $log->show();// 分页显示输出
         $this->assign('log_cut',$log_show);// 赋值分页输出
-        $all_log = $this->log->select();
-        $this->assign('log',$all_log);
 		$this->display('');
     }
     /**

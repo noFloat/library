@@ -1,0 +1,193 @@
+    <include file="Layout:header" />
+    <link type="text/css" rel="stylesheet" href="__PUBLIC__/css/animate.css">
+    <link type="text/css" rel="stylesheet" href="__PUBLIC__/css/jPages.css">
+     <script src="__PUBLIC__/js/jPages.min.js"></script>
+    	         <div class="row-fluid">
+                <div class="span12">
+                    <div class="tabbable" id="tabs-495601">
+                        <ul class="nav nav-tabs">
+                            <li class="active">
+                                <a href="#panel-873605" data-toggle="tab">批量添加书籍</a>
+                            </li>
+                            <li>
+                                <a href="#panel-411320" data-toggle="tab">导出书籍</a>
+                            </li>
+                        </ul>
+                        <div class="tab-content">
+                          <div class="tab-pane active" id="panel-873605">
+                                <table class="table table-striped">
+                                   <caption>批量添加书籍</caption>
+                                   <thead>
+                                      <tr>
+                                      </tr>
+                                   </thead>
+                                   <tbody>
+                                        <tr>
+                                        <form enctype="multipart/form-data"  method = "post" action = "{:U('Excel/import')}" id = "uploadForm">
+                                        <td><input id="lefile" type="file" style="display:none" name = "excel">
+                                            <div class="input-append">
+                                              <input id="photoCover" class="input-large" name = "" placeholder="文件名字" type="text" style="height:30px;">
+                                              <a class="btn" id = 'same'>Browse</a>
+                                            </div>
+                                        </td>
+                                        <td><input type="submit"  class = "btn btn-default" id = "upload_Form"></td>
+                                        </form>
+                                        </tr>
+                                   </tbody>
+                                </table>
+                            </div>
+                            <div class="tab-pane" id="panel-411320">
+                                <table class="table table-striped">
+                                   <caption>选择输入</caption>
+                                   <div style = "margin-top:6px;"> 
+                                         <input type = "text" id = "bookname" placeholder = "请输入书名">
+                                        <button type = "submit " id = "submit_stu" class = "btn btn-default" style = "height:24px;margin-left:10px;line-height:5px;" >查找书籍</button>
+                                        <form action = "{:U('Excel/showExcel')}" method ="post" style = "display:inline-block">
+                                          <input type="hidden" name = "booknum" value = "" id = "goal_id">
+                                          <input type = "submit" id = "export" class = "btn btn-default" style = "height:24px;margin-left:10px;line-height:5px;" value = "导出" >
+                                        </form>
+                                    </div>
+                                   <thead>
+                                      <tr>
+                                         <th>书名</th>
+                                         <th>导入时间</th>
+                                         <th>数量</th>
+                                         <th>出版社</th>
+                                         <th>作者</th>
+                                      </tr>
+                                   </thead>
+                                   <tbody  id = "content_book">
+                                        <tr>       
+                                        </tr>  
+                                        <div class = "holder"></div>
+                                    </tbody>
+                                   </tbody>
+                                </table>
+                            </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    <include file="Layout:footer" />
+    <script>
+        $('#same2').click(function() {
+          $('input[id=lefile2]').click();
+        });
+        $('input[id=lefile2]').change(function() {
+          $('#photoCover2').val($(this).val());
+        });
+    </script>
+    <script>
+        $('#same').click(function() {
+          $('input[id=lefile]').click();
+        });
+        $('input[id=lefile]').change(function() {
+          $('#photoCover').val($(this).val());
+        });
+    </script>
+    <script>
+        $("#stu_state").hide();
+        var allid =[];
+        var idstring ='';
+        var queryUrl = "{:U('Excel/searchBook')}"; 
+        $('#submit_stu').on('click', function () {
+            $.ajax({
+                url: queryUrl,
+                type: 'POST',
+                data: {
+                    bookname: $('#bookname').val(),
+                },
+                dataType: '',
+                success: function (res) {
+                    var data = $.parseJSON(res);
+                    var string;
+                    if (data.state == 200) {
+                        for (var i = 0; i < data.data.length; i++) {
+                          var ele = data.data[i];
+                          if(ele == undefined){
+                            continue;
+                          }else if($.inArray(ele.id,allid)!=-1){
+                            continue;
+                          }else{
+                            string += "<tr><td>"+ele.bookname+"</td><td>"+ele.purchingtime+"</td><td>"+ele.num+"</td><td>"+ele.pubhouse+"</td><td>"+ele.auth+"</td>"+"</td></tr>";
+                            allid.push(ele.id);
+                            idstring += '|'+ele.id;
+                          }
+                        }
+                        $("#goal_id").val(idstring);
+                        $('#content_book').append(string);
+                        $("div.holder").jPages({  
+                              containerID : "content_book",  
+                              previous : "←",  
+                              next : "→",  
+                              perPage : 10,  
+                              delay : 100  
+                            });  
+                    }else if (data.state == 404){
+                      alert(data.info);
+                    }
+                },
+                error: function () {
+                    alert('网络错误');
+                }
+            })
+        });
+    </script>
+    <script>
+        var addoneUrl = "{:U('Excel/addOne')}"; 
+        $('#addone').on('click', function () {
+            $.ajax({
+                url: addoneUrl,
+                type: 'POST',
+                data: {
+                    addone_bookname: $('#addone_bookname').val(),
+                    addone_pubhouse: $('#addone_pubhouse').val(),
+                    addone_num: $('#addone_num').val(),
+                    addone_auth: $('#addone_auth').val(),
+                },
+                dataType: '',
+                success: function (res) {
+                    var res = $.parseJSON(res);
+                    if (res.state == 200) {
+                      alert(res.info);
+                    }else if (res.state == 404){
+                      alert(res.info);
+                    }
+                },
+                error: function () {
+                    alert('网络错误');
+                }
+            })
+        });
+    </script>
+    <script>
+        $('#submit-change-one').on('click', function () {
+            $.ajax({
+                url: "{:U('Excel/update')}",
+                type: 'POST',
+                data: {
+                    id: $('#change-one_id').val(),
+                    bookname: $('#change-one_bookname').val(),
+                    num: $('#change-one_num').val(),
+                    id: $('#change-one_id').val(),
+                    pubhouse: $('#change-one_pubhouse').val(),
+                    auth: $('#change-one_auth').val(),
+                },
+                dataType: '',
+                success: function (res) {
+                    var res = $.parseJSON(res);
+                    if (res.state == 200) {
+                      alert(res.info);
+                      history.go(0);
+                    }else if (res.state == 404){
+                      alert(res.info);
+                    }
+                },
+                error: function () {
+                    alert('网络错误');
+                }
+            })
+        });
+    </script>

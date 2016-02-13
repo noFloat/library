@@ -10,27 +10,25 @@ class ExcelController extends Controller {
     }
 
     public function showExcel(){
-    	$student = M('student');
-    	$goal_id = explode(',',I('post.stunum'));
+    	$book = M('book');
+    	$goal_id = explode('|',I('post.booknum'));
     	array_shift($goal_id);
     	$num = count($goal_id);
     	$last_goal = array();
     	for($i = 0;$i<$num;$i++){
     		$condition = array(
-    			'stu_id' => $goal_id[$i]
+    			'id' => $goal_id[$i]
     		);
-    		$goal_student = $student->where($condition)->field(
-    			'stu_name,stu_id,sex,class_id,idcard,province,mail,phone'
+    		$goal_book = $book->where($condition)->field(
+    			'id,bookname,purchingtime,num,pubhouse,auth'
     			)->find();
-    		array_push($last_goal,$goal_student);
+    		array_push($last_goal,$goal_book);
     	}
-    	$str = "姓名,学号,性别,班级,身份证号,省份,邮箱,电话\n";   
+    	$str = "id,书名,购买时间,数量,出版社,作者\n";   
 	    $str = iconv('utf-8','gb2312',$str);   
-	    $student = M('student');
-	    $str = $student->select();
 	    for($i=0;$i<$num;$i++){
 	    	$middle .= implode(",",$last_goal[$i])."\n";
-	    }     
+	    }    
 	    $filename = date('Ymd').rand().'.csv'; //设置文件名  
 	    $middle = iconv('utf-8','gb2312',$middle);
 	    header("Content-type:text/csv");   
@@ -299,7 +297,9 @@ class ExcelController extends Controller {
         }
     }
 
-
+    public function showPort(){
+        $this->display("Excel/port");
+    }
 
     public function _empty() {
         $this->display('404/index');
