@@ -35,8 +35,8 @@
                                           <td>{$all_user.name}</td>
                                           <td class = "role">
                                             <select class="selectpicker" id = "">
-                                              <option value = "teacher">teacher</option>
-                                              <option value = "office">office</option>
+                                              <option value = "visitor">visitor</option>
+                                              <option value = "admin">admin</option>
                                             </select>
                                           </td>
                                           <td> <button type = "submit " id = "change_access" date-goal = "goal" date-type = "{$all_user.id}" class = "btn btn-default" style = "height:24px;margin-left:10px;line-height:5px;" >调整</button></td>
@@ -90,7 +90,7 @@
                                              <td>{$log.clientip}</td>    
                                           </tr>
                                         </volist>
-                                        <td>{$log_cut}</td><td></td>
+                                        <td></td><td></td><td></td><td>{$log_cut}</td>
                                      </tbody>
                                   </table>
                               </div>
