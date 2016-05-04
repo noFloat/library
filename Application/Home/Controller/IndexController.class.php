@@ -53,10 +53,12 @@ class IndexController extends Controller {
     }
 
     public function searchContent(){
-    	$output = $this->curl_init("http://www.amazon.cn/s/ref=nb_sb_noss?__mk_zh_CN=%E4%BA%9A%E9%A9%AC%E9%80%8A%E7%BD%91%E7%AB%99&url=search-alias%3Daps&field-keywords=".I('post.book'));
+    	$output = file_get_contents("http://www.amazon.cn/s/ref=nb_sb_noss?__mk_zh_CN=%E4%BA%9A%E9%A9%AC%E9%80%8A%E7%BD%91%E7%AB%99&url=search-alias%3Daps&field-keywords=".I('post.book'));
 		//$pattern = "/<li id=\"result_([\s\S]*?)\/li>/";
         $pattern = "/<a class=\"a-link-normal s-access-detail-page  a-text-normal\" target=\"_blank\" title=\"(.*?)\" href=\"(.*?)\"><h2 class=\"a-size-base a-color-null s-inline s-access-title a-text-normal\">(.*?)<\/h2><\/a>/";
+        $pattern = "/<a class=\"a-link-normal s-access-detail-page  a-text-normal\" target=\"_blank\" title=\"(.*?)\" href=\"(.*?)\">/";
         $result = $this->_patternGoal($pattern,$output);
+
         for($i = 0 ;$i<10;$i++){
             $goal[$i]['title'] = $result[1][$i];
             $goal[$i]['href'] = $result[2][$i];
@@ -95,6 +97,7 @@ class IndexController extends Controller {
     private function curl_init($url,$data){//初始化目标网站
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false); 
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($ch, CURLOPT_HEADER, 0);
         curl_setopt($curl, CURLOPT_USERAGENT, $_SERVER['HTTP_USER_AGENT']);
